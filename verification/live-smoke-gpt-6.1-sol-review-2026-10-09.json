@@ -1,0 +1,573 @@
+{
+  "kind": "real_api",
+  "date": "2026-10-09T01:31:38.664952+08:00",
+  "endpoint": "https://api.anmoxuan.xyz/v1/responses",
+  "requested_model": "gpt-6.1-sol",
+  "model_identity_note": "模型名称由中转平台提供，本验收不证明上游模型身份。",
+  "automatic_retries": 0,
+  "request_budget": 12,
+  "cases": [
+    {
+      "name": "remember",
+      "session": "a",
+      "prompt": "请记住：本会话项目代号是青松42。只回复已记住，不使用工具。",
+      "answer": "已记住",
+      "status": "completed",
+      "run_id": "2ec2156cc51b4fce8154e9169d10d959",
+      "model_calls": 1,
+      "tool_calls": 0,
+      "tool_results": [],
+      "summary_present": false
+    },
+    {
+      "name": "plain_followup",
+      "session": "a",
+      "prompt": "项目代号是什么？只回答代号，不使用工具。",
+      "answer": "青松42",
+      "status": "completed",
+      "run_id": "c824ed4352024788913a2d890348bd1a",
+      "model_calls": 1,
+      "tool_calls": 0,
+      "tool_results": [],
+      "summary_present": false
+    },
+    {
+      "name": "three_tools",
+      "session": "a",
+      "prompt": "请实际使用三个对应工具：计算(17+25)*3；在本地模拟资料搜索Agent；读取session文档。最后简短汇总，注明搜索为模拟资料。",
+      "answer": "汇总：\n- 计算结果：126\n- Agent 搜索：找到 1 条相关资料；搜索为本地模拟资料。\n- session 文档：会话由 `user_id` 和 `session_id` 隔离，并支持历史保存与切换。",
+      "status": "completed",
+      "run_id": "b8fde2403ce74e83a0f106b796d23e8c",
+      "model_calls": 2,
+      "tool_calls": 3,
+      "tool_results": [
+        {
+          "tool": "calculator",
+          "result": {
+            "ok": true,
+            "data": {
+              "expression": "(17+25)*3",
+              "value": 126
+            }
+          }
+        },
+        {
+          "tool": "search",
+          "result": {
+            "ok": true,
+            "data": {
+              "source": "mock-local-corpus",
+              "query": "Agent",
+              "results": [
+                {
+                  "document_id": "runtime",
+                  "title": "Agent Runtime 主循环",
+                  "snippet": "Agent 主循环依次调用模型、校验工具参数、执行工具、回填工具结果，再调用模型生成回答。工具调用次数需要设上限。"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "tool": "read_docs",
+          "result": {
+            "ok": true,
+            "data": {
+              "document_id": "session",
+              "title": "Session 会话隔离与切换",
+              "content": "会话键由 user_id 和 session_id 组成，独立历史与有损摘要保存到 SQLite。切换会话只改变后续请求的会话键，再次切回或重启后可读取该键已保存的历史；不同用户的同名会话互相隔离。同一 Runtime 实例通过运行锁拒绝同一会话并发执行。不同实例或进程依靠 SQLite revision 条件更新防止旧历史覆盖新历史，但不能阻止此前重复调用模型或执行工具。线上服务还需要可信身份认证和适当的跨进程执行控制。这份文档是本地演示语料。"
+            }
+          }
+        }
+      ],
+      "summary_present": true
+    },
+    {
+      "name": "tool_followup",
+      "session": "a",
+      "prompt": "把刚才的计算结果再加8，请用计算器确认。",
+      "answer": "计算确认结果：134",
+      "status": "completed",
+      "run_id": "dcb522b3630e4032b7348c808c8c4d0a",
+      "model_calls": 2,
+      "tool_calls": 1,
+      "tool_results": [
+        {
+          "tool": "calculator",
+          "result": {
+            "ok": true,
+            "data": {
+              "expression": "126+8",
+              "value": 134
+            }
+          }
+        }
+      ],
+      "summary_present": true
+    },
+    {
+      "name": "isolated_window",
+      "session": "b",
+      "prompt": "当前会话此前是否约定了项目代号？若没有，只回复未知。不使用工具。",
+      "answer": "未知",
+      "status": "completed",
+      "run_id": "c8fe238cee884251955635f4a80b3497",
+      "model_calls": 1,
+      "tool_calls": 0,
+      "tool_results": [],
+      "summary_present": false
+    },
+    {
+      "name": "resume_after_compaction",
+      "session": "a",
+      "prompt": "请回答最开始约定的项目代号和最近一次计算结果。不使用工具。",
+      "answer": "青松42，134",
+      "status": "completed",
+      "run_id": "b7fb8da36aa8423998519650916bfc7c",
+      "model_calls": 1,
+      "tool_calls": 0,
+      "tool_results": [],
+      "summary_present": true
+    }
+  ],
+  "checks": {
+    "all_runs_completed": true,
+    "plain_followup": true,
+    "three_tools_success": true,
+    "calculation_126": true,
+    "tool_followup_134": true,
+    "session_isolation": true,
+    "resume_and_compaction": true
+  },
+  "timeout_seconds": 90,
+  "max_output_tokens": 2400,
+  "reasoning_effort": "low",
+  "passed": true,
+  "http_attempts": 8,
+  "model_calls": [
+    {
+      "request_number": 1,
+      "input_roles": [
+        "system",
+        "user"
+      ],
+      "tool_names": [],
+      "usage": {
+        "input_tokens": 340,
+        "output_tokens": 7,
+        "total_tokens": 347
+      }
+    },
+    {
+      "request_number": 2,
+      "input_roles": [
+        "system",
+        "user",
+        "assistant",
+        "user"
+      ],
+      "tool_names": [],
+      "usage": {
+        "input_tokens": 366,
+        "output_tokens": 7,
+        "total_tokens": 373
+      }
+    },
+    {
+      "request_number": 3,
+      "input_roles": [
+        "system",
+        "user",
+        "assistant",
+        "user",
+        "assistant",
+        "user"
+      ],
+      "tool_names": [
+        "calculator",
+        "search",
+        "read_docs"
+      ],
+      "usage": {
+        "input_tokens": 419,
+        "output_tokens": 91,
+        "total_tokens": 510
+      }
+    },
+    {
+      "request_number": 4,
+      "input_roles": [
+        "system",
+        "user",
+        "assistant",
+        "user",
+        "assistant",
+        "user",
+        "assistant",
+        "tool",
+        "tool",
+        "tool"
+      ],
+      "tool_names": [],
+      "usage": {
+        "input_tokens": 797,
+        "output_tokens": 61,
+        "total_tokens": 858
+      }
+    },
+    {
+      "request_number": 5,
+      "input_roles": [
+        "system",
+        "user",
+        "assistant",
+        "user",
+        "assistant",
+        "user",
+        "assistant",
+        "tool",
+        "tool",
+        "tool",
+        "assistant",
+        "user"
+      ],
+      "tool_names": [
+        "calculator"
+      ],
+      "usage": {
+        "input_tokens": 1209,
+        "output_tokens": 20,
+        "total_tokens": 1229
+      }
+    },
+    {
+      "request_number": 6,
+      "input_roles": [
+        "system",
+        "user",
+        "assistant",
+        "user",
+        "assistant",
+        "user",
+        "assistant",
+        "tool",
+        "tool",
+        "tool",
+        "assistant",
+        "user",
+        "assistant",
+        "tool"
+      ],
+      "tool_names": [],
+      "usage": {
+        "input_tokens": 1257,
+        "output_tokens": 9,
+        "total_tokens": 1266
+      }
+    },
+    {
+      "request_number": 7,
+      "input_roles": [
+        "system",
+        "user"
+      ],
+      "tool_names": [],
+      "usage": {
+        "input_tokens": 337,
+        "output_tokens": 5,
+        "total_tokens": 342
+      }
+    },
+    {
+      "request_number": 8,
+      "input_roles": [
+        "system",
+        "user",
+        "assistant",
+        "user",
+        "assistant",
+        "tool",
+        "tool",
+        "tool",
+        "assistant",
+        "user",
+        "assistant",
+        "tool",
+        "assistant",
+        "user"
+      ],
+      "tool_names": [],
+      "usage": {
+        "input_tokens": 1301,
+        "output_tokens": 9,
+        "total_tokens": 1310
+      }
+    }
+  ],
+  "trace": [
+    {
+      "at": "2026-10-08T17:31:38.689978+00:00",
+      "event": "run_start",
+      "run_id": "2ec2156cc51b4fce8154e9169d10d959",
+      "session_hash": "b9848f77047b0b0a"
+    },
+    {
+      "at": "2026-10-08T17:31:38.705652+00:00",
+      "event": "model_start",
+      "run_id": "2ec2156cc51b4fce8154e9169d10d959",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1
+    },
+    {
+      "at": "2026-10-08T17:31:53.341898+00:00",
+      "event": "model_end",
+      "run_id": "2ec2156cc51b4fce8154e9169d10d959",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1,
+      "elapsed_ms": 14635
+    },
+    {
+      "at": "2026-10-08T17:31:53.428892+00:00",
+      "event": "run_end",
+      "run_id": "2ec2156cc51b4fce8154e9169d10d959",
+      "session_hash": "b9848f77047b0b0a",
+      "status": "completed",
+      "model_calls": 1,
+      "tool_calls": 0,
+      "elapsed_ms": 14739
+    },
+    {
+      "at": "2026-10-08T17:31:53.463427+00:00",
+      "event": "run_start",
+      "run_id": "c824ed4352024788913a2d890348bd1a",
+      "session_hash": "b9848f77047b0b0a"
+    },
+    {
+      "at": "2026-10-08T17:31:53.492880+00:00",
+      "event": "model_start",
+      "run_id": "c824ed4352024788913a2d890348bd1a",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1
+    },
+    {
+      "at": "2026-10-08T17:32:03.829959+00:00",
+      "event": "model_end",
+      "run_id": "c824ed4352024788913a2d890348bd1a",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1,
+      "elapsed_ms": 10331
+    },
+    {
+      "at": "2026-10-08T17:32:03.842301+00:00",
+      "event": "run_end",
+      "run_id": "c824ed4352024788913a2d890348bd1a",
+      "session_hash": "b9848f77047b0b0a",
+      "status": "completed",
+      "model_calls": 1,
+      "tool_calls": 0,
+      "elapsed_ms": 10379
+    },
+    {
+      "at": "2026-10-08T17:32:03.847765+00:00",
+      "event": "run_start",
+      "run_id": "b8fde2403ce74e83a0f106b796d23e8c",
+      "session_hash": "b9848f77047b0b0a"
+    },
+    {
+      "at": "2026-10-08T17:32:03.850424+00:00",
+      "event": "model_start",
+      "run_id": "b8fde2403ce74e83a0f106b796d23e8c",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1
+    },
+    {
+      "at": "2026-10-08T17:32:18.508437+00:00",
+      "event": "model_end",
+      "run_id": "b8fde2403ce74e83a0f106b796d23e8c",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1,
+      "elapsed_ms": 14657
+    },
+    {
+      "at": "2026-10-08T17:32:18.509242+00:00",
+      "event": "tool_end",
+      "run_id": "b8fde2403ce74e83a0f106b796d23e8c",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1,
+      "tool": "calculator",
+      "call_id": "call_f377dc3b5d414a8d94d0aab4658bd699",
+      "ok": true,
+      "code": null,
+      "elapsed_ms": 0
+    },
+    {
+      "at": "2026-10-08T17:32:18.510063+00:00",
+      "event": "tool_end",
+      "run_id": "b8fde2403ce74e83a0f106b796d23e8c",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1,
+      "tool": "search",
+      "call_id": "call_e9c8e4ba9c034151850b804445ab6153",
+      "ok": true,
+      "code": null,
+      "elapsed_ms": 0
+    },
+    {
+      "at": "2026-10-08T17:32:18.510738+00:00",
+      "event": "tool_end",
+      "run_id": "b8fde2403ce74e83a0f106b796d23e8c",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1,
+      "tool": "read_docs",
+      "call_id": "call_e0a85d0446cd4b7c8e7a6ecb077b1031",
+      "ok": true,
+      "code": null,
+      "elapsed_ms": 0
+    },
+    {
+      "at": "2026-10-08T17:32:18.511218+00:00",
+      "event": "model_start",
+      "run_id": "b8fde2403ce74e83a0f106b796d23e8c",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 2
+    },
+    {
+      "at": "2026-10-08T17:32:30.169256+00:00",
+      "event": "model_end",
+      "run_id": "b8fde2403ce74e83a0f106b796d23e8c",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 2,
+      "elapsed_ms": 11658
+    },
+    {
+      "at": "2026-10-08T17:32:30.193219+00:00",
+      "event": "run_end",
+      "run_id": "b8fde2403ce74e83a0f106b796d23e8c",
+      "session_hash": "b9848f77047b0b0a",
+      "status": "completed",
+      "model_calls": 2,
+      "tool_calls": 3,
+      "elapsed_ms": 26345
+    },
+    {
+      "at": "2026-10-08T17:32:30.196208+00:00",
+      "event": "run_start",
+      "run_id": "dcb522b3630e4032b7348c808c8c4d0a",
+      "session_hash": "b9848f77047b0b0a"
+    },
+    {
+      "at": "2026-10-08T17:32:30.197849+00:00",
+      "event": "model_start",
+      "run_id": "dcb522b3630e4032b7348c808c8c4d0a",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1
+    },
+    {
+      "at": "2026-10-08T17:32:41.468804+00:00",
+      "event": "model_end",
+      "run_id": "dcb522b3630e4032b7348c808c8c4d0a",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1,
+      "elapsed_ms": 11270
+    },
+    {
+      "at": "2026-10-08T17:32:41.477179+00:00",
+      "event": "tool_end",
+      "run_id": "dcb522b3630e4032b7348c808c8c4d0a",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1,
+      "tool": "calculator",
+      "call_id": "call_uDqlsHrKbQurvImaaRtME6Ce",
+      "ok": true,
+      "code": null,
+      "elapsed_ms": 2
+    },
+    {
+      "at": "2026-10-08T17:32:41.486128+00:00",
+      "event": "model_start",
+      "run_id": "dcb522b3630e4032b7348c808c8c4d0a",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 2
+    },
+    {
+      "at": "2026-10-08T17:32:45.147159+00:00",
+      "event": "model_end",
+      "run_id": "dcb522b3630e4032b7348c808c8c4d0a",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 2,
+      "elapsed_ms": 3655
+    },
+    {
+      "at": "2026-10-08T17:32:45.157307+00:00",
+      "event": "run_end",
+      "run_id": "dcb522b3630e4032b7348c808c8c4d0a",
+      "session_hash": "b9848f77047b0b0a",
+      "status": "completed",
+      "model_calls": 2,
+      "tool_calls": 1,
+      "elapsed_ms": 14961
+    },
+    {
+      "at": "2026-10-08T17:32:45.160056+00:00",
+      "event": "run_start",
+      "run_id": "c8fe238cee884251955635f4a80b3497",
+      "session_hash": "c934bfec6177bb1d"
+    },
+    {
+      "at": "2026-10-08T17:32:45.168909+00:00",
+      "event": "model_start",
+      "run_id": "c8fe238cee884251955635f4a80b3497",
+      "session_hash": "c934bfec6177bb1d",
+      "step": 1
+    },
+    {
+      "at": "2026-10-08T17:32:51.311884+00:00",
+      "event": "model_end",
+      "run_id": "c8fe238cee884251955635f4a80b3497",
+      "session_hash": "c934bfec6177bb1d",
+      "step": 1,
+      "elapsed_ms": 6142
+    },
+    {
+      "at": "2026-10-08T17:32:51.375034+00:00",
+      "event": "run_end",
+      "run_id": "c8fe238cee884251955635f4a80b3497",
+      "session_hash": "c934bfec6177bb1d",
+      "status": "completed",
+      "model_calls": 1,
+      "tool_calls": 0,
+      "elapsed_ms": 6215
+    },
+    {
+      "at": "2026-10-08T17:32:51.456605+00:00",
+      "event": "run_start",
+      "run_id": "b7fb8da36aa8423998519650916bfc7c",
+      "session_hash": "b9848f77047b0b0a"
+    },
+    {
+      "at": "2026-10-08T17:32:51.483891+00:00",
+      "event": "model_start",
+      "run_id": "b7fb8da36aa8423998519650916bfc7c",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1
+    },
+    {
+      "at": "2026-10-08T17:32:54.613335+00:00",
+      "event": "model_end",
+      "run_id": "b7fb8da36aa8423998519650916bfc7c",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1,
+      "elapsed_ms": 3122
+    },
+    {
+      "at": "2026-10-08T17:32:54.694442+00:00",
+      "event": "run_end",
+      "run_id": "b7fb8da36aa8423998519650916bfc7c",
+      "session_hash": "b9848f77047b0b0a",
+      "status": "completed",
+      "model_calls": 1,
+      "tool_calls": 0,
+      "elapsed_ms": 3238
+    }
+  ]
+}

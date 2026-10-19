@@ -1,0 +1,7 @@
+{
+  "kind": "single_generation_diagnostic",
+  "automatic_retries": 0,
+  "status": 502,
+  "error_type": "upstream_error",
+  "safe_message": "Upstream access forbidden, please contact administrator"
+}

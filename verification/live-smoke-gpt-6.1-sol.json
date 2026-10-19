@@ -1,0 +1,295 @@
+{
+  "kind": "real_api",
+  "date": "2026-10-08T23:41:45.408318+08:00",
+  "endpoint": "https://api.anmoxuan.xyz/v1/responses",
+  "requested_model": "gpt-6.1-sol",
+  "model_identity_note": "模型名称由中转平台提供，本验收不证明上游模型身份。",
+  "automatic_retries": 0,
+  "request_budget": 12,
+  "cases": [
+    {
+      "name": "remember",
+      "session": "a",
+      "prompt": "请记住：本会话项目代号是青松42。只回复已记住，不使用工具。",
+      "answer": "已记住。",
+      "status": "completed",
+      "run_id": "000dedadcbc04b1c86809deee9bf7949",
+      "model_calls": 1,
+      "tool_calls": 0,
+      "tool_results": [],
+      "summary_present": false
+    },
+    {
+      "name": "plain_followup",
+      "session": "a",
+      "prompt": "项目代号是什么？只回答代号，不使用工具。",
+      "answer": "青松42",
+      "status": "completed",
+      "run_id": "f94e75dad0654ad19dafb7e0f56d7782",
+      "model_calls": 1,
+      "tool_calls": 0,
+      "tool_results": [],
+      "summary_present": false
+    },
+    {
+      "name": "three_tools",
+      "session": "a",
+      "prompt": "请实际使用三个对应工具：计算(17+25)*3；在本地模拟资料搜索Agent；读取session文档。最后简短汇总，注明搜索为模拟资料。",
+      "answer": "模型调用未完成（model_timeout），请检查配置或稍后继续。",
+      "status": "model_error",
+      "run_id": "e66ca5ab734c459d8999de633afe3a56",
+      "model_calls": 2,
+      "tool_calls": 3,
+      "tool_results": [
+        {
+          "tool": "calculator",
+          "result": {
+            "ok": true,
+            "data": {
+              "expression": "(17+25)*3",
+              "value": 126
+            }
+          }
+        },
+        {
+          "tool": "search",
+          "result": {
+            "ok": true,
+            "data": {
+              "source": "mock-local-corpus",
+              "query": "Agent",
+              "results": [
+                {
+                  "document_id": "runtime",
+                  "title": "Agent Runtime 主循环",
+                  "snippet": "Agent 主循环依次调用模型、校验工具参数、执行工具、回填工具结果，再调用模型生成回答。工具调用次数需要设上限。"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "tool": "read_docs",
+          "result": {
+            "ok": true,
+            "data": {
+              "document_id": "session",
+              "title": "Session 会话隔离与切换",
+              "content": "会话键由 user_id 和 session_id 组成。每个键拥有独立历史、压缩摘要和运行锁。切换会话只切换当前指针，再次切回时读取该键的历史。同名 session_id 属于不同用户时必须隔离。单进程内存会话适合演示；生产服务需要身份认证、持久化存储和跨进程并发控制。这份文档是本地演示语料。"
+            }
+          }
+        }
+      ],
+      "summary_present": true
+    }
+  ],
+  "checks": {
+    "all_runs_completed": false,
+    "plain_followup": true,
+    "three_tools_success": true,
+    "calculation_126": true,
+    "tool_followup_134": false,
+    "session_isolation": false,
+    "resume_and_compaction": false
+  },
+  "passed": false,
+  "http_attempts": 4,
+  "model_calls": [
+    {
+      "request_number": 1,
+      "input_roles": [
+        "system",
+        "user"
+      ],
+      "tool_names": [],
+      "usage": {
+        "input_tokens": 636,
+        "output_tokens": 8,
+        "total_tokens": 644
+      }
+    },
+    {
+      "request_number": 2,
+      "input_roles": [
+        "system",
+        "user",
+        "assistant",
+        "user"
+      ],
+      "tool_names": [],
+      "usage": {
+        "input_tokens": 663,
+        "output_tokens": 7,
+        "total_tokens": 670
+      }
+    },
+    {
+      "request_number": 3,
+      "input_roles": [
+        "system",
+        "user",
+        "assistant",
+        "user",
+        "assistant",
+        "user"
+      ],
+      "tool_names": [
+        "calculator",
+        "search",
+        "read_docs"
+      ],
+      "usage": {
+        "input_tokens": 716,
+        "output_tokens": 92,
+        "total_tokens": 808
+      }
+    }
+  ],
+  "trace": [
+    {
+      "at": "2026-10-08T15:41:45.426445+00:00",
+      "event": "run_start",
+      "run_id": "000dedadcbc04b1c86809deee9bf7949",
+      "session_hash": "b9848f77047b0b0a"
+    },
+    {
+      "at": "2026-10-08T15:41:45.436899+00:00",
+      "event": "model_start",
+      "run_id": "000dedadcbc04b1c86809deee9bf7949",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1
+    },
+    {
+      "at": "2026-10-08T15:42:07.629837+00:00",
+      "event": "model_end",
+      "run_id": "000dedadcbc04b1c86809deee9bf7949",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1,
+      "elapsed_ms": 22192
+    },
+    {
+      "at": "2026-10-08T15:42:07.649859+00:00",
+      "event": "run_end",
+      "run_id": "000dedadcbc04b1c86809deee9bf7949",
+      "session_hash": "b9848f77047b0b0a",
+      "status": "completed",
+      "model_calls": 1,
+      "tool_calls": 0,
+      "elapsed_ms": 22223
+    },
+    {
+      "at": "2026-10-08T15:42:07.657795+00:00",
+      "event": "run_start",
+      "run_id": "f94e75dad0654ad19dafb7e0f56d7782",
+      "session_hash": "b9848f77047b0b0a"
+    },
+    {
+      "at": "2026-10-08T15:42:07.662691+00:00",
+      "event": "model_start",
+      "run_id": "f94e75dad0654ad19dafb7e0f56d7782",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1
+    },
+    {
+      "at": "2026-10-08T15:42:27.696394+00:00",
+      "event": "model_end",
+      "run_id": "f94e75dad0654ad19dafb7e0f56d7782",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1,
+      "elapsed_ms": 20032
+    },
+    {
+      "at": "2026-10-08T15:42:27.722953+00:00",
+      "event": "run_end",
+      "run_id": "f94e75dad0654ad19dafb7e0f56d7782",
+      "session_hash": "b9848f77047b0b0a",
+      "status": "completed",
+      "model_calls": 1,
+      "tool_calls": 0,
+      "elapsed_ms": 20065
+    },
+    {
+      "at": "2026-10-08T15:42:27.732739+00:00",
+      "event": "run_start",
+      "run_id": "e66ca5ab734c459d8999de633afe3a56",
+      "session_hash": "b9848f77047b0b0a"
+    },
+    {
+      "at": "2026-10-08T15:42:27.734893+00:00",
+      "event": "model_start",
+      "run_id": "e66ca5ab734c459d8999de633afe3a56",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1
+    },
+    {
+      "at": "2026-10-08T15:42:52.370870+00:00",
+      "event": "model_end",
+      "run_id": "e66ca5ab734c459d8999de633afe3a56",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1,
+      "elapsed_ms": 24634
+    },
+    {
+      "at": "2026-10-08T15:42:52.372274+00:00",
+      "event": "tool_end",
+      "run_id": "e66ca5ab734c459d8999de633afe3a56",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1,
+      "tool": "calculator",
+      "call_id": "call_qiOvcGXYEWVJRnhJkzySCARM",
+      "ok": true,
+      "code": null,
+      "elapsed_ms": 0
+    },
+    {
+      "at": "2026-10-08T15:42:52.375736+00:00",
+      "event": "tool_end",
+      "run_id": "e66ca5ab734c459d8999de633afe3a56",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1,
+      "tool": "search",
+      "call_id": "call_UAfoKHXGYcfNc1LeXSRXoWhK",
+      "ok": true,
+      "code": null,
+      "elapsed_ms": 2
+    },
+    {
+      "at": "2026-10-08T15:42:52.378645+00:00",
+      "event": "tool_end",
+      "run_id": "e66ca5ab734c459d8999de633afe3a56",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1,
+      "tool": "read_docs",
+      "call_id": "call_RFGdkiiIf7z6E69Z0uUWvWIs",
+      "ok": true,
+      "code": null,
+      "elapsed_ms": 1
+    },
+    {
+      "at": "2026-10-08T15:42:52.380635+00:00",
+      "event": "model_start",
+      "run_id": "e66ca5ab734c459d8999de633afe3a56",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 2
+    },
+    {
+      "at": "2026-10-08T15:43:13.422371+00:00",
+      "event": "model_error",
+      "run_id": "e66ca5ab734c459d8999de633afe3a56",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 2,
+      "code": "model_timeout",
+      "http_status": null
+    },
+    {
+      "at": "2026-10-08T15:43:13.442522+00:00",
+      "event": "run_end",
+      "run_id": "e66ca5ab734c459d8999de633afe3a56",
+      "session_hash": "b9848f77047b0b0a",
+      "status": "model_error",
+      "model_calls": 2,
+      "tool_calls": 3,
+      "elapsed_ms": 45710
+    }
+  ]
+}

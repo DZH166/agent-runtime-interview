@@ -1,0 +1,6 @@
+# Observed on Python 3.13.9 / Windows; direct requirements are in requirements.txt.
+attrs==26.1.0
+jsonschema==4.23.0
+jsonschema-specifications==2025.9.1
+referencing==0.37.0
+rpds-py==2026.9.1

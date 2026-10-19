@@ -1,0 +1,20 @@
+{
+  "kind": "clean_zip_reproduction_offline",
+  "date": "2026-10-09T01:37:36.648657+08:00",
+  "python": "3.13.9",
+  "real_api_calls": 0,
+  "archive_file_count": 50,
+  "checks": {
+    "fresh_install": true,
+    "extracted_tests_passed": true,
+    "interactive_cli_passed": true,
+    "session_switch_passed": true,
+    "restart_history_passed": true,
+    "final_source_matches_tested_extraction": true
+  },
+  "passed": true,
+  "compared_source_files": 36,
+  "test_output": "----------------------------------------------------------------------\nRan 64 tests in 4.901s\n\nOK\n",
+  "cli_output": "模式：离线模拟（不调用真实 LLM）\n会话：window-1；数据目录：<extracted-project>\\.local\\demo\n命令：/switch 会话名、/sessions、/quit。切换保留历史，重启可恢复。\n[window-1] > [离线模拟] 工具返回：{\"ok\":true,\"data\":{\"expression\":\"7+8\",\"value\":15}}\n[completed] 模型 2 次 / 工具 1 次 / run d3c141f6\n[window-1] > [离线模拟] 工具返回：{\"ok\":true,\"data\":{\"source\":\"mock-local-corpus\",\"query\":\"Agent\",\"results\":[{\"document_id\":\"runtime\",\"title\":\"Agent Runtime 主循环\",\"snippet\":\"Agent 主循环依次调用模型、校验工具参数、执行工具、回填工具结果，再调用模型生成回答。工具调用次数需要设上限。\"}]}}\n[completed] 模型 2 次 / 工具 1 次 / run f7adfa8e\n[window-1] > [离线模拟] 工具返回：{\"ok\":true,\"data\":{\"document_id\":\"session\",\"title\":\"Session 会话隔离与切换\",\"content\":\"会话键由 user_id 和 session_id 组成，独立历史与有损摘要保存到 SQLite。切换会话只改变后续请求的会话键，再次切回或重启后可读取该键已保存的历史；不同用户的同名会话互相隔离。同一 Runtime 实例通过运行锁拒绝同一会话并发执行。不同实例或进程依靠 SQLite revision 条件更新防止旧历史覆盖新历史，但不能阻止此前重复调用模型或执行工具。线上服务还需要可信身份认证和适当的跨进程执行控制。这份文档是本地演示语料。\"}}\n[completed] 模型 2 次 / 工具 1 次 / run b9394adb\n[window-1] > [b] > [离线模拟] 本会话可见的用户历史：[]\n[completed] 模型 1 次 / 工具 0 次 / run f71954be\n[b] > [window-1] > [离线模拟] 本会话可见的用户历史：[\"计算 7+8\", \"搜索 Agent\", \"文档 session\"]\n[completed] 模型 1 次 / 工具 0 次 / run f9f9ab3e\n[window-1] > ",
+  "restart_output": "模式：离线模拟（不调用真实 LLM）\n会话：window-1；数据目录：<extracted-project>\\.local\\demo\n[离线模拟] 本会话可见的用户历史：[\"计算 7+8\", \"搜索 Agent\", \"文档 session\", \"回顾\"]\n状态=completed 模型调用=1 工具调用=0\n"
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "document_id": "runtime",
+    "title": "Agent Runtime 主循环",
+    "snippet": "Agent 主循环依次调用模型、校验工具参数、执行工具、回填工具结果，再调用模型生成回答。工具调用次数需要设上限。"
+  },
+  {
+    "document_id": "session",
+    "title": "Session 会话隔离与切换",
+    "snippet": "会话隔离使用 user_id 与 session_id 共同定位历史。同一用户切换会话应恢复对应历史；不同用户的同名会话不能共享消息。"
+  },
+  {
+    "document_id": "memory",
+    "title": "Memory 上下文轮数与基础压缩",
+    "snippet": "记忆保存完整轮次及工具调用配对。保留最近有限轮历史，将淘汰轮次中的关键内容做有界提取摘要；基础压缩不等于无损记忆。"
+  }
+]

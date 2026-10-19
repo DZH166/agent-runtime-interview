@@ -1,0 +1,19 @@
+{
+  "kind": "clean_zip_reproduction_offline",
+  "date": "2026-10-08T23:45:31.558001+08:00",
+  "python": "3.13.9",
+  "real_api_calls": 0,
+  "archive_file_count": 43,
+  "checks": {
+    "fresh_install": true,
+    "extracted_tests_passed": true,
+    "interactive_cli_passed": true,
+    "restart_history_passed": true
+  },
+  "passed": true,
+  "test_output": "----------------------------------------------------------------------\nRan 55 tests in 2.126s\n\nOK\n",
+  "cli_output": "模式：离线模拟（不调用真实 LLM）\n会话：window-1；数据目录：<extracted-project>\\.local\\demo\n命令：/switch 会话名、/sessions、/quit。切换保留历史，重启可恢复。\n[window-1] > [离线模拟] 工具返回：{\"ok\":true,\"data\":{\"expression\":\"7+8\",\"value\":15}}\n[completed] 模型 2 次 / 工具 1 次 / run 526b25de\n[window-1] > [离线模拟] 工具返回：{\"ok\":true,\"data\":{\"source\":\"mock-local-corpus\",\"query\":\"Agent\",\"results\":[{\"document_id\":\"runtime\",\"title\":\"Agent Runtime 主循环\",\"snippet\":\"Agent 主循环依次调用模型、校验工具参数、执行工具、回填工具结果，再调用模型生成回答。工具调用次数需要设上限。\"}]}}\n[completed] 模型 2 次 / 工具 1 次 / run 07dc976f\n[window-1] > [离线模拟] 工具返回：{\"ok\":true,\"data\":{\"document_id\":\"session\",\"title\":\"Session 会话隔离与切换\",\"content\":\"会话键由 user_id 和 session_id 组成。每个键拥有独立历史、压缩摘要和运行锁。切换会话只切换当前指针，再次切回时读取该键的历史。同名 session_id 属于不同用户时必须隔离。单进程内存会话适合演示；生产服务需要身份认证、持久化存储和跨进程并发控制。这份文档是本地演示语料。\"}}\n[completed] 模型 2 次 / 工具 1 次 / run d84519ea\n[window-1] > [b] > [离线模拟] 本会话可见的用户历史：[]\n[completed] 模型 1 次 / 工具 0 次 / run 49ad84fc\n[b] > [window-1] > [离线模拟] 本会话可见的用户历史：[\"计算 7+8\", \"搜索 Agent\", \"文档 session\"]\n[completed] 模型 1 次 / 工具 0 次 / run ede5cfeb\n[window-1] > ",
+  "restart_output": "模式：离线模拟（不调用真实 LLM）\n会话：window-1；数据目录：<extracted-project>\\.local\\demo\n[离线模拟] 本会话可见的用户历史：[\"计算 7+8\", \"搜索 Agent\", \"文档 session\", \"回顾\"]\n状态=completed 模型调用=1 工具调用=0\n",
+  "final_source_matches_tested_extraction": true,
+  "compared_source_files": 22
+}

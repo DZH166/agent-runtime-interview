@@ -1,0 +1,69 @@
+{
+  "kind": "real_api",
+  "date": "2026-10-08T23:39:57.196710+08:00",
+  "endpoint": "https://api.anmoxuan.xyz/v1/responses",
+  "requested_model": "gpt-6.1",
+  "model_identity_note": "模型名称由中转平台提供，本验收不证明上游模型身份。",
+  "automatic_retries": 0,
+  "request_budget": 12,
+  "cases": [
+    {
+      "name": "remember",
+      "session": "a",
+      "prompt": "请记住：本会话项目代号是青松42。只回复已记住，不使用工具。",
+      "answer": "模型调用未完成（model_http），请检查配置或稍后继续。",
+      "status": "model_error",
+      "run_id": "68b41a81223143168b244003d22eacd9",
+      "model_calls": 1,
+      "tool_calls": 0,
+      "tool_results": [],
+      "summary_present": false
+    }
+  ],
+  "checks": {
+    "all_runs_completed": false,
+    "plain_followup": false,
+    "three_tools_success": false,
+    "calculation_126": false,
+    "tool_followup_134": false,
+    "session_isolation": false,
+    "resume_and_compaction": false
+  },
+  "passed": false,
+  "http_attempts": 1,
+  "model_calls": [],
+  "trace": [
+    {
+      "at": "2026-10-08T15:39:57.216657+00:00",
+      "event": "run_start",
+      "run_id": "68b41a81223143168b244003d22eacd9",
+      "session_hash": "b9848f77047b0b0a"
+    },
+    {
+      "at": "2026-10-08T15:39:57.227108+00:00",
+      "event": "model_start",
+      "run_id": "68b41a81223143168b244003d22eacd9",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1
+    },
+    {
+      "at": "2026-10-08T15:39:59.800787+00:00",
+      "event": "model_error",
+      "run_id": "68b41a81223143168b244003d22eacd9",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1,
+      "code": "model_http",
+      "http_status": 401
+    },
+    {
+      "at": "2026-10-08T15:39:59.812943+00:00",
+      "event": "run_end",
+      "run_id": "68b41a81223143168b244003d22eacd9",
+      "session_hash": "b9848f77047b0b0a",
+      "status": "model_error",
+      "model_calls": 1,
+      "tool_calls": 0,
+      "elapsed_ms": 2596
+    }
+  ]
+}
