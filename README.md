@@ -43,12 +43,12 @@ python -m venv .venv
 
 ## 使用真实模型
 
-我实际测试的接入使用 Responses API，平台提供的模型 ID 是 `gpt-6.1-sol`。真实模式需要配置自己的地址、模型和密钥；配置有问题时会直接提示错误。
+我实际测试的接入使用 Responses API，模型 ID 由接入平台提供。真实模式需要配置自己的地址、模型和密钥；配置有问题时会直接提示错误。
 
 在 Windows 上首次运行，先执行下面的配置命令，按提示输入密钥。输入不会回显，脚本会用当前 Windows 用户的 DPAPI 加密保存到 `.local/private`，这份本地配置没有上传到仓库。
 
 ```powershell
-.\.venv\Scripts\python.exe -X utf8 -m scripts.configure_model
+.\.venv\Scripts\python.exe -X utf8 -m scripts.configure_model --base-url https://your-provider.example/v1 --model your-model-id
 ```
 
 配置成功后启动；以后在同一 Windows 用户下直接运行这一条即可：
@@ -57,7 +57,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -X utf8 -m agent --config-dir .local/private
 ```
 
-配置脚本默认使用我测试时的地址 `https://api.anmoxuan.xyz/v1`、模型 `gpt-6.1-sol` 和 Responses 协议。使用其他接入时，可以通过 `--base-url`、`--model`、`--protocol` 指定；是否支持该协议和模型，以自己的服务商为准。
+配置脚本不内置地址和模型，需要显式传入 `--base-url`、`--model`；协议默认 Responses，也可以用 `--protocol` 指定。推理强度默认不发送，只有所选模型明确支持时才加上 `--reasoning-effort low`。把上面的占位地址和模型换成你自己的，是否支持该协议和模型，以自己的服务商为准。
 
 <details>
 <summary>使用环境变量配置（其他系统或临时运行）</summary>
@@ -65,11 +65,12 @@ python -m venv .venv
 也可以不保存配置，通过环境变量运行。下面是 PowerShell 示例：
 
 ```powershell
-$env:AGENT_BASE_URL='https://api.anmoxuan.xyz/v1'
-$env:AGENT_MODEL='gpt-6.1-sol'
+$env:AGENT_BASE_URL='https://your-provider.example/v1'
+$env:AGENT_MODEL='your-model-id'
 $env:AGENT_PROTOCOL='responses'
 $env:AGENT_AUTH='bearer'
-$env:AGENT_REASONING_EFFORT='low'
+# 只有模型支持推理强度时才设置，例如：
+# $env:AGENT_REASONING_EFFORT='low'
 $env:AGENT_MAX_OUTPUT_TOKENS='2400'
 $env:AGENT_TIMEOUT_SECONDS='90'
 $secureKey = Read-Host '输入 API Key（不会回显）' -AsSecureString
@@ -132,7 +133,7 @@ flowchart LR
 | `agent/trace.py` | 运行步骤、工具名、状态和耗时记录 |
 | `agent/__main__.py`、`demo.py` | 命令行入口和离线模式 |
 
-会话管理上，我用 `(user_id, session_id)` 区分历史。每次提问先读取当前会话，请求模型前再检查上下文长度。发给模型的内容依次是：系统规则、标注为历史背景的摘录、最近几轮完整对话、当前问题及其工具结果。本轮结束后保存，因此后续追问和重启程序后都能继续读取。
+会话管理上，我用 `(user_id, session_id)` 区分历史。每次提问先读取当前会话，请求模型前再检查上下文长度。发给模型的内容依次是：系统规则、标注为历史背景的摘录、最近几轮完整对话、当前问题及其工具结果。只有模型给出最终答案后才保存本轮；失败状态会返回给用户，但不会混进后续对话历史。
 
 我按完整的一轮处理历史，避免只保留工具请求，却丢掉对应结果。超出限制时，先移除较早轮次并提取部分内容作为摘要；摘要也放不下时继续淘汰。这样能控制上下文大小，但会丢失信息，不能当作长期可靠的业务记录。具体做法见 [记忆设计](docs/memory-design.md)。
 
@@ -144,9 +145,9 @@ flowchart LR
 
 | 检查 | 结果 |
 |---|---|
-| 离线自动测试 | 2026-10-19 重新运行，64 项通过 |
-| 真实模型调用 | 2026-10-09，6 项场景通过，共 8 次 HTTP 请求，没有自动重试 |
-| 干净目录复现 | 2026-10-09，重新安装依赖，检查三个工具、会话切换和进程重启后的历史恢复，通过 |
+| 离线自动测试 | 2026-10-21，65 项通过 |
+| 真实模型调用 | 2026-10-09，6 项场景通过、8 次 HTTP 请求；2026-10-21 两次复核都在首个请求收到上游 HTTP 502，均未自动重试 |
+| 干净目录复现 | 2026-10-21，重新安装依赖，检查三个工具、会话切换和进程重启后的历史恢复，通过 |
 
 运行输出和之前遇到的失败记录都保留在 [verification](verification/README.md)。这些结果对应记录中的环境和版本；更换模型后需要重新检查。
 
@@ -185,4 +186,5 @@ flowchart LR
 - [跟读讲解](docs/walkthrough.md)：沿着一次计算和追问看代码。
 - [原题与实现对应关系](docs/requirements.md)：各项要求对应哪些文件和测试。
 - [两道架构题的详细说明](docs/architecture-defense.md)：设计取舍和故障场景推演。
-- [AI 使用与问题解决记录](docs/ai-worklog.md)：开发中使用的提示、遇到的问题和处理过程。
+- [AI 使用与问题解决记录](docs/ai-worklog.md)：开发过程、遇到的问题和取舍。
+- [关键 Prompt 记录](docs/prompts.md)：当时实际使用的任务提示，以及采纳和拒绝的理由。

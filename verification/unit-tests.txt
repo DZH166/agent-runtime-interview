@@ -1,6 +1,7 @@
 test_corrupt_database_has_controlled_exit_and_is_not_overwritten (test_cli.CliTests.test_corrupt_database_has_controlled_exit_and_is_not_overwritten) ... ok
 test_explicit_empty_ask_is_invalid_without_interactive_or_model_call (test_cli.CliTests.test_explicit_empty_ask_is_invalid_without_interactive_or_model_call) ... ok
 test_session_list_database_error_allows_the_next_question (test_cli.CliTests.test_session_list_database_error_allows_the_next_question) ... ok
+test_reasoning_effort_is_opt_in_and_responses_only (test_configure_model.ConfigureModelArgumentTests.test_reasoning_effort_is_opt_in_and_responses_only) ... ok
 test_codec_runtime_persistence_and_compaction (test_integration.IntegrationTests.test_codec_runtime_persistence_and_compaction) ... ok
 test_responses_opaque_context_persists_and_is_isolated (test_integration.IntegrationTests.test_responses_opaque_context_persists_and_is_isolated) ... ok
 test_env_and_alternative_auth (test_provider.ProviderTests.test_env_and_alternative_auth) ... ok
@@ -36,13 +37,13 @@ test_duplicate_id_and_empty_response_rejected (test_runtime.RuntimeTests.test_du
 test_escaped_summary_fits_context_and_allows_next_short_question (test_runtime.RuntimeTests.test_escaped_summary_fits_context_and_allows_next_short_question) ... ok
 test_invalid_tool_can_be_corrected (test_runtime.RuntimeTests.test_invalid_tool_can_be_corrected) ... ok
 test_memory_budgets_and_oversized_current_turn (test_runtime.RuntimeTests.test_memory_budgets_and_oversized_current_turn) ... ok
-test_model_error_after_tool_keeps_protocol_complete (test_runtime.RuntimeTests.test_model_error_after_tool_keeps_protocol_complete) ... ok
+test_model_error_after_tool_does_not_persist_incomplete_turn (test_runtime.RuntimeTests.test_model_error_after_tool_does_not_persist_incomplete_turn) ... ok
 test_multiple_tools_in_one_response_and_next_step (test_runtime.RuntimeTests.test_multiple_tools_in_one_response_and_next_step) ... ok
 test_rejects_bad_input_without_model_request (test_runtime.RuntimeTests.test_rejects_bad_input_without_model_request) ... ok
 test_repeated_id_across_turns_is_rejected_before_execution (test_runtime.RuntimeTests.test_repeated_id_across_turns_is_rejected_before_execution) ... ok
 test_same_session_busy_without_blocking_other_session (test_runtime.RuntimeTests.test_same_session_busy_without_blocking_other_session) ... ok
 test_same_user_windows_and_different_users_are_isolated (test_runtime.RuntimeTests.test_same_user_windows_and_different_users_are_isolated) ... ok
-test_step_limit_closes_tool_group (test_runtime.RuntimeTests.test_step_limit_closes_tool_group) ... ok
+test_step_limit_does_not_persist_incomplete_turn (test_runtime.RuntimeTests.test_step_limit_does_not_persist_incomplete_turn) ... ok
 test_summary_only_history_is_trimmed_without_cutting_pending_messages (test_runtime.RuntimeTests.test_summary_only_history_is_trimmed_without_cutting_pending_messages) ... ok
 test_tool_result_and_followup (test_runtime.RuntimeTests.test_tool_result_and_followup) ... ok
 test_trace_is_correlated_and_does_not_record_content (test_runtime.RuntimeTests.test_trace_is_correlated_and_does_not_record_content) ... ok
@@ -64,6 +65,6 @@ test_search_is_explicitly_mock_and_supports_followup (test_tools.ToolRegistryTes
 test_unknown_tool (test_tools.ToolRegistryTests.test_unknown_tool) ... ok
 
 ----------------------------------------------------------------------
-Ran 64 tests in 4.869s
+Ran 65 tests in 2.058s
 
 OK

@@ -42,7 +42,7 @@ class BudgetModel:
 def run(model, evidence_path: Path):
     evidence = {"kind": "real_api", "date": datetime.now(timezone(timedelta(hours=8))).isoformat(),
                 "endpoint": model.endpoint, "requested_model": model.model,
-                "model_identity_note": "模型名称由中转平台提供，本验收不证明上游模型身份。",
+                "model_identity_note": "模型名称由接入平台提供，本验收不证明上游模型身份。",
                 "automatic_retries": 0, "request_budget": 12, "cases": [], "checks": {}}
     evidence["timeout_seconds"] = model.timeout
     evidence["max_output_tokens"] = model.max_tokens

@@ -8,16 +8,27 @@ import sys
 from pathlib import Path
 
 
-def main():
+def parse_args(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--base-url", default="https://api.anmoxuan.xyz/v1")
-    parser.add_argument("--model", default="gpt-6.1-sol")
+    parser.add_argument("--base-url", required=True, help="你的模型接口地址，例如 https://your-provider.example/v1")
+    parser.add_argument("--model", required=True, help="你的模型 ID")
     parser.add_argument("--protocol", choices=["responses", "messages"], default="responses")
     parser.add_argument("--directory", type=Path, default=Path(".local/private"))
     parser.add_argument("--timeout", type=float, default=90)
     parser.add_argument("--max-output-tokens", type=int, default=2400)
-    parser.add_argument("--reasoning-effort", default="low")
-    args = parser.parse_args()
+    parser.add_argument(
+        "--reasoning-effort",
+        choices=["none", "minimal", "low", "medium", "high", "xhigh"],
+        help="仅当所选 Responses 模型支持时指定；默认不发送该字段",
+    )
+    args = parser.parse_args(argv)
+    if args.reasoning_effort is not None and args.protocol != "responses":
+        parser.error("--reasoning-effort 只能与 --protocol responses 一起使用。")
+    return args
+
+
+def main():
+    args = parse_args()
     if os.name != "nt" or not sys.stdin.isatty():
         print("Use an interactive Windows terminal for hidden input, or configure process environment variables.")
         return 2
@@ -25,7 +36,7 @@ def main():
     from agent.config import model_class
     key = getpass.getpass("API key (hidden): ").strip()
     # Validate all fields before storing; never send a network request here.
-    extra = {"reasoning_effort": args.reasoning_effort} if args.protocol == "responses" else {}
+    extra = {"reasoning_effort": args.reasoning_effort} if args.reasoning_effort is not None else {}
     model_class(args.protocol)(args.base_url, args.model, key, timeout=args.timeout,
                                max_tokens=args.max_output_tokens, **extra)
     class Blob(ctypes.Structure):

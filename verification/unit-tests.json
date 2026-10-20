@@ -1,10 +1,10 @@
 {
   "kind": "offline_tests",
-  "date": "2026-10-09T01:37:36.648657+08:00",
+  "date": "2026-10-21T00:56:10.167991+08:00",
   "python": "3.13.9",
   "jsonschema": "4.23.0",
   "exit_code": 0,
   "real_api_calls": 0,
   "command": "python -X utf8 -m unittest discover -s tests -v",
-  "duration_seconds": 5.533
+  "duration_seconds": 2.73
 }

@@ -17,11 +17,11 @@
 | 同一用户两个独立会话，可切回续聊 | `SessionStore`，CLI `/switch` | 同用户不同 session、不同用户同名 session、持久化重载 |
 | 最大轮次；持续对话记住先前状态；普通及工具追问 | `MemoryPolicy`、`Runtime` | 完整历史和结果回传；最大模型步骤6、最近完整轮次6 |
 | 上下文过长有基础压缩，自行判断放入哪些信息 | `MemoryPolicy.compact/messages`、`docs/memory-design.md` | 完整轮次摘录与淘汰；摘要转义后的实际字符预算；超长单轮中止 |
-| 基本异常处理、工具 trace/执行日志 | `Trace`、结构化工具错误、ModelError、CLI | 格式/HTTP/超时/重复ID/工具异常/日志故障/数据库故障测试 |
+| 基本异常处理、工具 trace/执行日志 | `Trace`、结构化工具错误、ModelError、CLI | 格式/HTTP/超时/重复ID/工具异常/日志故障/数据库故障测试；未完成轮次不会写入会话历史 |
 | 构建以上功能的测试 | `tests/` | unittest 自动测试；模拟传输与真实请求明确区分 |
-| 使用真实 LLM API | `ResponsesModel`、`scripts/live_smoke.py` | 修复后使用 gpt-6.1-sol 再验收，6 项场景通过、8 次 HTTP 请求；旧成功与失败记录均保留 |
+| 使用真实 LLM API | `ResponsesModel`、`scripts/live_smoke.py` | 2026-10-09 有 6 项场景通过、8 次 HTTP 请求；2026-10-21 两次独立复核均收到上游 HTTP 502，记录见验证说明 |
 | README 含运行方式、系统设计、memory 召回时机与放置方式 | `README.md`、`docs/memory-design.md` | 按说明在独立目录复现 |
-| AI Prompt 与问题解决记录 | `docs/ai-worklog.md` | 记录真实使用和实际问题，不虚构候选人独立完成 |
+| AI Prompt 与问题解决记录 | `docs/ai-worklog.md`、`docs/prompts.md` | 记录真实使用、关键提示、采纳/拒绝和实际问题，不虚构候选人独立完成 |
 | 架构题选择一道 | `docs/architecture-q4.md` | 第 4 题作为主答；第 5 题数据一致性作为完整补充，详细讲解在 `architecture-defense.md` |
 
 九题完整范围也已核对：1 Redis；2 KV cache 与 context；3 同异步与首 token；4 幂等与重试；5 Agent/后端一致性；6 滑动窗口限流；7 硬件音频接入与 ASR 会话；8 多机型与 ASR 适配；9 端点检测和语音轮次状态机。原题仍是九选一；同时准备第 4、5 题是用户选择的准备方式，不是新增的笔试要求。

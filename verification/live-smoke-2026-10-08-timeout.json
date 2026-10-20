@@ -1,9 +1,9 @@
 {
   "kind": "real_api",
   "date": "2026-10-08T23:41:45.408318+08:00",
-  "endpoint": "https://api.anmoxuan.xyz/v1/responses",
-  "requested_model": "gpt-6.1-sol",
-  "model_identity_note": "模型名称由中转平台提供，本验收不证明上游模型身份。",
+  "endpoint": "<provider-endpoint>",
+  "requested_model": "<model-id>",
+  "model_identity_note": "模型名称由接入平台提供，本验收不证明上游模型身份。",
   "automatic_retries": 0,
   "request_budget": 12,
   "cases": [

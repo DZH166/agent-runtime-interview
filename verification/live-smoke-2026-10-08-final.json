@@ -1,9 +1,9 @@
 {
   "kind": "real_api",
-  "date": "2026-10-09T01:31:38.664952+08:00",
-  "endpoint": "https://api.anmoxuan.xyz/v1/responses",
-  "requested_model": "gpt-6.1-sol",
-  "model_identity_note": "模型名称由中转平台提供，本验收不证明上游模型身份。",
+  "date": "2026-10-08T23:44:42.574185+08:00",
+  "endpoint": "<provider-endpoint>",
+  "requested_model": "<model-id>",
+  "model_identity_note": "模型名称由接入平台提供，本验收不证明上游模型身份。",
   "automatic_retries": 0,
   "request_budget": 12,
   "cases": [
@@ -11,9 +11,9 @@
       "name": "remember",
       "session": "a",
       "prompt": "请记住：本会话项目代号是青松42。只回复已记住，不使用工具。",
-      "answer": "已记住",
+      "answer": "已记住。",
       "status": "completed",
-      "run_id": "2ec2156cc51b4fce8154e9169d10d959",
+      "run_id": "2f6260867e084e1ba145a0254fca0aa2",
       "model_calls": 1,
       "tool_calls": 0,
       "tool_results": [],
@@ -25,7 +25,7 @@
       "prompt": "项目代号是什么？只回答代号，不使用工具。",
       "answer": "青松42",
       "status": "completed",
-      "run_id": "c824ed4352024788913a2d890348bd1a",
+      "run_id": "ff4751f2f61648078f87085140f46736",
       "model_calls": 1,
       "tool_calls": 0,
       "tool_results": [],
@@ -35,9 +35,9 @@
       "name": "three_tools",
       "session": "a",
       "prompt": "请实际使用三个对应工具：计算(17+25)*3；在本地模拟资料搜索Agent；读取session文档。最后简短汇总，注明搜索为模拟资料。",
-      "answer": "汇总：\n- 计算结果：126\n- Agent 搜索：找到 1 条相关资料；搜索为本地模拟资料。\n- session 文档：会话由 `user_id` 和 `session_id` 隔离，并支持历史保存与切换。",
+      "answer": "- 计算：126  \n- 搜索 Agent：找到 1 条结果；**搜索为本地模拟资料**。  \n- session 文档：会话按 `user_id + session_id` 隔离，拥有独立历史、摘要和运行锁。",
       "status": "completed",
-      "run_id": "b8fde2403ce74e83a0f106b796d23e8c",
+      "run_id": "01c812a784824fcf957319c30bd5378f",
       "model_calls": 2,
       "tool_calls": 3,
       "tool_results": [
@@ -75,7 +75,7 @@
             "data": {
               "document_id": "session",
               "title": "Session 会话隔离与切换",
-              "content": "会话键由 user_id 和 session_id 组成，独立历史与有损摘要保存到 SQLite。切换会话只改变后续请求的会话键，再次切回或重启后可读取该键已保存的历史；不同用户的同名会话互相隔离。同一 Runtime 实例通过运行锁拒绝同一会话并发执行。不同实例或进程依靠 SQLite revision 条件更新防止旧历史覆盖新历史，但不能阻止此前重复调用模型或执行工具。线上服务还需要可信身份认证和适当的跨进程执行控制。这份文档是本地演示语料。"
+              "content": "会话键由 user_id 和 session_id 组成。每个键拥有独立历史、压缩摘要和运行锁。切换会话只切换当前指针，再次切回时读取该键的历史。同名 session_id 属于不同用户时必须隔离。单进程内存会话适合演示；生产服务需要身份认证、持久化存储和跨进程并发控制。这份文档是本地演示语料。"
             }
           }
         }
@@ -86,9 +86,9 @@
       "name": "tool_followup",
       "session": "a",
       "prompt": "把刚才的计算结果再加8，请用计算器确认。",
-      "answer": "计算确认结果：134",
+      "answer": "134",
       "status": "completed",
-      "run_id": "dcb522b3630e4032b7348c808c8c4d0a",
+      "run_id": "a639c8d26e014e3b821b1397eb3d48ec",
       "model_calls": 2,
       "tool_calls": 1,
       "tool_results": [
@@ -111,7 +111,7 @@
       "prompt": "当前会话此前是否约定了项目代号？若没有，只回复未知。不使用工具。",
       "answer": "未知",
       "status": "completed",
-      "run_id": "c8fe238cee884251955635f4a80b3497",
+      "run_id": "81c1e07e99c645f8a3ad894f758fe0f9",
       "model_calls": 1,
       "tool_calls": 0,
       "tool_results": [],
@@ -121,9 +121,9 @@
       "name": "resume_after_compaction",
       "session": "a",
       "prompt": "请回答最开始约定的项目代号和最近一次计算结果。不使用工具。",
-      "answer": "青松42，134",
+      "answer": "项目代号：青松42\n最近一次计算结果：134",
       "status": "completed",
-      "run_id": "b7fb8da36aa8423998519650916bfc7c",
+      "run_id": "3847fee50eb841e2bdbc871ca13432e0",
       "model_calls": 1,
       "tool_calls": 0,
       "tool_results": [],
@@ -153,9 +153,9 @@
       ],
       "tool_names": [],
       "usage": {
-        "input_tokens": 340,
-        "output_tokens": 7,
-        "total_tokens": 347
+        "input_tokens": 636,
+        "output_tokens": 8,
+        "total_tokens": 644
       }
     },
     {
@@ -168,9 +168,9 @@
       ],
       "tool_names": [],
       "usage": {
-        "input_tokens": 366,
+        "input_tokens": 663,
         "output_tokens": 7,
-        "total_tokens": 373
+        "total_tokens": 670
       }
     },
     {
@@ -189,9 +189,9 @@
         "read_docs"
       ],
       "usage": {
-        "input_tokens": 419,
-        "output_tokens": 91,
-        "total_tokens": 510
+        "input_tokens": 716,
+        "output_tokens": 90,
+        "total_tokens": 806
       }
     },
     {
@@ -210,9 +210,9 @@
       ],
       "tool_names": [],
       "usage": {
-        "input_tokens": 797,
-        "output_tokens": 61,
-        "total_tokens": 858
+        "input_tokens": 1054,
+        "output_tokens": 60,
+        "total_tokens": 1114
       }
     },
     {
@@ -235,9 +235,9 @@
         "calculator"
       ],
       "usage": {
-        "input_tokens": 1209,
+        "input_tokens": 874,
         "output_tokens": 20,
-        "total_tokens": 1229
+        "total_tokens": 894
       }
     },
     {
@@ -260,9 +260,9 @@
       ],
       "tool_names": [],
       "usage": {
-        "input_tokens": 1257,
-        "output_tokens": 9,
-        "total_tokens": 1266
+        "input_tokens": 922,
+        "output_tokens": 5,
+        "total_tokens": 927
       }
     },
     {
@@ -273,9 +273,9 @@
       ],
       "tool_names": [],
       "usage": {
-        "input_tokens": 337,
+        "input_tokens": 633,
         "output_tokens": 5,
-        "total_tokens": 342
+        "total_tokens": 638
       }
     },
     {
@@ -298,276 +298,276 @@
       ],
       "tool_names": [],
       "usage": {
-        "input_tokens": 1301,
-        "output_tokens": 9,
-        "total_tokens": 1310
+        "input_tokens": 962,
+        "output_tokens": 18,
+        "total_tokens": 980
       }
     }
   ],
   "trace": [
     {
-      "at": "2026-10-08T17:31:38.689978+00:00",
+      "at": "2026-10-08T15:44:42.592681+00:00",
       "event": "run_start",
-      "run_id": "2ec2156cc51b4fce8154e9169d10d959",
+      "run_id": "2f6260867e084e1ba145a0254fca0aa2",
       "session_hash": "b9848f77047b0b0a"
     },
     {
-      "at": "2026-10-08T17:31:38.705652+00:00",
+      "at": "2026-10-08T15:44:42.603934+00:00",
       "event": "model_start",
-      "run_id": "2ec2156cc51b4fce8154e9169d10d959",
+      "run_id": "2f6260867e084e1ba145a0254fca0aa2",
       "session_hash": "b9848f77047b0b0a",
       "step": 1
     },
     {
-      "at": "2026-10-08T17:31:53.341898+00:00",
+      "at": "2026-10-08T15:45:01.237262+00:00",
       "event": "model_end",
-      "run_id": "2ec2156cc51b4fce8154e9169d10d959",
+      "run_id": "2f6260867e084e1ba145a0254fca0aa2",
       "session_hash": "b9848f77047b0b0a",
       "step": 1,
-      "elapsed_ms": 14635
+      "elapsed_ms": 18633
     },
     {
-      "at": "2026-10-08T17:31:53.428892+00:00",
+      "at": "2026-10-08T15:45:01.260064+00:00",
       "event": "run_end",
-      "run_id": "2ec2156cc51b4fce8154e9169d10d959",
+      "run_id": "2f6260867e084e1ba145a0254fca0aa2",
       "session_hash": "b9848f77047b0b0a",
       "status": "completed",
       "model_calls": 1,
       "tool_calls": 0,
-      "elapsed_ms": 14739
+      "elapsed_ms": 18667
     },
     {
-      "at": "2026-10-08T17:31:53.463427+00:00",
+      "at": "2026-10-08T15:45:01.267832+00:00",
       "event": "run_start",
-      "run_id": "c824ed4352024788913a2d890348bd1a",
+      "run_id": "ff4751f2f61648078f87085140f46736",
       "session_hash": "b9848f77047b0b0a"
     },
     {
-      "at": "2026-10-08T17:31:53.492880+00:00",
+      "at": "2026-10-08T15:45:01.273462+00:00",
       "event": "model_start",
-      "run_id": "c824ed4352024788913a2d890348bd1a",
+      "run_id": "ff4751f2f61648078f87085140f46736",
       "session_hash": "b9848f77047b0b0a",
       "step": 1
     },
     {
-      "at": "2026-10-08T17:32:03.829959+00:00",
+      "at": "2026-10-08T15:45:24.196100+00:00",
       "event": "model_end",
-      "run_id": "c824ed4352024788913a2d890348bd1a",
+      "run_id": "ff4751f2f61648078f87085140f46736",
       "session_hash": "b9848f77047b0b0a",
       "step": 1,
-      "elapsed_ms": 10331
+      "elapsed_ms": 22922
     },
     {
-      "at": "2026-10-08T17:32:03.842301+00:00",
+      "at": "2026-10-08T15:45:24.224252+00:00",
       "event": "run_end",
-      "run_id": "c824ed4352024788913a2d890348bd1a",
+      "run_id": "ff4751f2f61648078f87085140f46736",
       "session_hash": "b9848f77047b0b0a",
       "status": "completed",
       "model_calls": 1,
       "tool_calls": 0,
-      "elapsed_ms": 10379
+      "elapsed_ms": 22956
     },
     {
-      "at": "2026-10-08T17:32:03.847765+00:00",
+      "at": "2026-10-08T15:45:24.234328+00:00",
       "event": "run_start",
-      "run_id": "b8fde2403ce74e83a0f106b796d23e8c",
+      "run_id": "01c812a784824fcf957319c30bd5378f",
       "session_hash": "b9848f77047b0b0a"
     },
     {
-      "at": "2026-10-08T17:32:03.850424+00:00",
+      "at": "2026-10-08T15:45:24.240062+00:00",
       "event": "model_start",
-      "run_id": "b8fde2403ce74e83a0f106b796d23e8c",
+      "run_id": "01c812a784824fcf957319c30bd5378f",
       "session_hash": "b9848f77047b0b0a",
       "step": 1
     },
     {
-      "at": "2026-10-08T17:32:18.508437+00:00",
+      "at": "2026-10-08T15:45:44.664925+00:00",
       "event": "model_end",
-      "run_id": "b8fde2403ce74e83a0f106b796d23e8c",
+      "run_id": "01c812a784824fcf957319c30bd5378f",
       "session_hash": "b9848f77047b0b0a",
       "step": 1,
-      "elapsed_ms": 14657
+      "elapsed_ms": 20423
     },
     {
-      "at": "2026-10-08T17:32:18.509242+00:00",
+      "at": "2026-10-08T15:45:44.667542+00:00",
       "event": "tool_end",
-      "run_id": "b8fde2403ce74e83a0f106b796d23e8c",
+      "run_id": "01c812a784824fcf957319c30bd5378f",
       "session_hash": "b9848f77047b0b0a",
       "step": 1,
       "tool": "calculator",
-      "call_id": "call_f377dc3b5d414a8d94d0aab4658bd699",
+      "call_id": "call_Yq6UjOa0pJB4yDgT3Rfix1i9",
       "ok": true,
       "code": null,
-      "elapsed_ms": 0
+      "elapsed_ms": 1
     },
     {
-      "at": "2026-10-08T17:32:18.510063+00:00",
+      "at": "2026-10-08T15:45:44.671295+00:00",
       "event": "tool_end",
-      "run_id": "b8fde2403ce74e83a0f106b796d23e8c",
+      "run_id": "01c812a784824fcf957319c30bd5378f",
       "session_hash": "b9848f77047b0b0a",
       "step": 1,
       "tool": "search",
-      "call_id": "call_e9c8e4ba9c034151850b804445ab6153",
-      "ok": true,
-      "code": null,
-      "elapsed_ms": 0
-    },
-    {
-      "at": "2026-10-08T17:32:18.510738+00:00",
-      "event": "tool_end",
-      "run_id": "b8fde2403ce74e83a0f106b796d23e8c",
-      "session_hash": "b9848f77047b0b0a",
-      "step": 1,
-      "tool": "read_docs",
-      "call_id": "call_e0a85d0446cd4b7c8e7a6ecb077b1031",
-      "ok": true,
-      "code": null,
-      "elapsed_ms": 0
-    },
-    {
-      "at": "2026-10-08T17:32:18.511218+00:00",
-      "event": "model_start",
-      "run_id": "b8fde2403ce74e83a0f106b796d23e8c",
-      "session_hash": "b9848f77047b0b0a",
-      "step": 2
-    },
-    {
-      "at": "2026-10-08T17:32:30.169256+00:00",
-      "event": "model_end",
-      "run_id": "b8fde2403ce74e83a0f106b796d23e8c",
-      "session_hash": "b9848f77047b0b0a",
-      "step": 2,
-      "elapsed_ms": 11658
-    },
-    {
-      "at": "2026-10-08T17:32:30.193219+00:00",
-      "event": "run_end",
-      "run_id": "b8fde2403ce74e83a0f106b796d23e8c",
-      "session_hash": "b9848f77047b0b0a",
-      "status": "completed",
-      "model_calls": 2,
-      "tool_calls": 3,
-      "elapsed_ms": 26345
-    },
-    {
-      "at": "2026-10-08T17:32:30.196208+00:00",
-      "event": "run_start",
-      "run_id": "dcb522b3630e4032b7348c808c8c4d0a",
-      "session_hash": "b9848f77047b0b0a"
-    },
-    {
-      "at": "2026-10-08T17:32:30.197849+00:00",
-      "event": "model_start",
-      "run_id": "dcb522b3630e4032b7348c808c8c4d0a",
-      "session_hash": "b9848f77047b0b0a",
-      "step": 1
-    },
-    {
-      "at": "2026-10-08T17:32:41.468804+00:00",
-      "event": "model_end",
-      "run_id": "dcb522b3630e4032b7348c808c8c4d0a",
-      "session_hash": "b9848f77047b0b0a",
-      "step": 1,
-      "elapsed_ms": 11270
-    },
-    {
-      "at": "2026-10-08T17:32:41.477179+00:00",
-      "event": "tool_end",
-      "run_id": "dcb522b3630e4032b7348c808c8c4d0a",
-      "session_hash": "b9848f77047b0b0a",
-      "step": 1,
-      "tool": "calculator",
-      "call_id": "call_uDqlsHrKbQurvImaaRtME6Ce",
+      "call_id": "call_m15ecIvOJIKzihdO5ozpXrgv",
       "ok": true,
       "code": null,
       "elapsed_ms": 2
     },
     {
-      "at": "2026-10-08T17:32:41.486128+00:00",
+      "at": "2026-10-08T15:45:44.674398+00:00",
+      "event": "tool_end",
+      "run_id": "01c812a784824fcf957319c30bd5378f",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1,
+      "tool": "read_docs",
+      "call_id": "call_maAZPryB931MTTtb74kU6czR",
+      "ok": true,
+      "code": null,
+      "elapsed_ms": 1
+    },
+    {
+      "at": "2026-10-08T15:45:44.676747+00:00",
       "event": "model_start",
-      "run_id": "dcb522b3630e4032b7348c808c8c4d0a",
+      "run_id": "01c812a784824fcf957319c30bd5378f",
       "session_hash": "b9848f77047b0b0a",
       "step": 2
     },
     {
-      "at": "2026-10-08T17:32:45.147159+00:00",
+      "at": "2026-10-08T15:46:07.376396+00:00",
       "event": "model_end",
-      "run_id": "dcb522b3630e4032b7348c808c8c4d0a",
+      "run_id": "01c812a784824fcf957319c30bd5378f",
       "session_hash": "b9848f77047b0b0a",
       "step": 2,
-      "elapsed_ms": 3655
+      "elapsed_ms": 22698
     },
     {
-      "at": "2026-10-08T17:32:45.157307+00:00",
+      "at": "2026-10-08T15:46:07.402458+00:00",
       "event": "run_end",
-      "run_id": "dcb522b3630e4032b7348c808c8c4d0a",
+      "run_id": "01c812a784824fcf957319c30bd5378f",
+      "session_hash": "b9848f77047b0b0a",
+      "status": "completed",
+      "model_calls": 2,
+      "tool_calls": 3,
+      "elapsed_ms": 43168
+    },
+    {
+      "at": "2026-10-08T15:46:07.409378+00:00",
+      "event": "run_start",
+      "run_id": "a639c8d26e014e3b821b1397eb3d48ec",
+      "session_hash": "b9848f77047b0b0a"
+    },
+    {
+      "at": "2026-10-08T15:46:07.414300+00:00",
+      "event": "model_start",
+      "run_id": "a639c8d26e014e3b821b1397eb3d48ec",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1
+    },
+    {
+      "at": "2026-10-08T15:46:22.821246+00:00",
+      "event": "model_end",
+      "run_id": "a639c8d26e014e3b821b1397eb3d48ec",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1,
+      "elapsed_ms": 15405
+    },
+    {
+      "at": "2026-10-08T15:46:22.822594+00:00",
+      "event": "tool_end",
+      "run_id": "a639c8d26e014e3b821b1397eb3d48ec",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 1,
+      "tool": "calculator",
+      "call_id": "call_0ec009e660d549ceae543dbfad7189a3",
+      "ok": true,
+      "code": null,
+      "elapsed_ms": 0
+    },
+    {
+      "at": "2026-10-08T15:46:22.824117+00:00",
+      "event": "model_start",
+      "run_id": "a639c8d26e014e3b821b1397eb3d48ec",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 2
+    },
+    {
+      "at": "2026-10-08T15:46:32.654658+00:00",
+      "event": "model_end",
+      "run_id": "a639c8d26e014e3b821b1397eb3d48ec",
+      "session_hash": "b9848f77047b0b0a",
+      "step": 2,
+      "elapsed_ms": 9829
+    },
+    {
+      "at": "2026-10-08T15:46:32.672043+00:00",
+      "event": "run_end",
+      "run_id": "a639c8d26e014e3b821b1397eb3d48ec",
       "session_hash": "b9848f77047b0b0a",
       "status": "completed",
       "model_calls": 2,
       "tool_calls": 1,
-      "elapsed_ms": 14961
+      "elapsed_ms": 25263
     },
     {
-      "at": "2026-10-08T17:32:45.160056+00:00",
+      "at": "2026-10-08T15:46:32.677528+00:00",
       "event": "run_start",
-      "run_id": "c8fe238cee884251955635f4a80b3497",
+      "run_id": "81c1e07e99c645f8a3ad894f758fe0f9",
       "session_hash": "c934bfec6177bb1d"
     },
     {
-      "at": "2026-10-08T17:32:45.168909+00:00",
+      "at": "2026-10-08T15:46:32.691134+00:00",
       "event": "model_start",
-      "run_id": "c8fe238cee884251955635f4a80b3497",
+      "run_id": "81c1e07e99c645f8a3ad894f758fe0f9",
       "session_hash": "c934bfec6177bb1d",
       "step": 1
     },
     {
-      "at": "2026-10-08T17:32:51.311884+00:00",
+      "at": "2026-10-08T15:46:48.334630+00:00",
       "event": "model_end",
-      "run_id": "c8fe238cee884251955635f4a80b3497",
+      "run_id": "81c1e07e99c645f8a3ad894f758fe0f9",
       "session_hash": "c934bfec6177bb1d",
       "step": 1,
-      "elapsed_ms": 6142
+      "elapsed_ms": 15642
     },
     {
-      "at": "2026-10-08T17:32:51.375034+00:00",
+      "at": "2026-10-08T15:46:48.356632+00:00",
       "event": "run_end",
-      "run_id": "c8fe238cee884251955635f4a80b3497",
+      "run_id": "81c1e07e99c645f8a3ad894f758fe0f9",
       "session_hash": "c934bfec6177bb1d",
       "status": "completed",
       "model_calls": 1,
       "tool_calls": 0,
-      "elapsed_ms": 6215
+      "elapsed_ms": 15679
     },
     {
-      "at": "2026-10-08T17:32:51.456605+00:00",
+      "at": "2026-10-08T15:46:48.370298+00:00",
       "event": "run_start",
-      "run_id": "b7fb8da36aa8423998519650916bfc7c",
+      "run_id": "3847fee50eb841e2bdbc871ca13432e0",
       "session_hash": "b9848f77047b0b0a"
     },
     {
-      "at": "2026-10-08T17:32:51.483891+00:00",
+      "at": "2026-10-08T15:46:48.376385+00:00",
       "event": "model_start",
-      "run_id": "b7fb8da36aa8423998519650916bfc7c",
+      "run_id": "3847fee50eb841e2bdbc871ca13432e0",
       "session_hash": "b9848f77047b0b0a",
       "step": 1
     },
     {
-      "at": "2026-10-08T17:32:54.613335+00:00",
+      "at": "2026-10-08T15:46:59.925108+00:00",
       "event": "model_end",
-      "run_id": "b7fb8da36aa8423998519650916bfc7c",
+      "run_id": "3847fee50eb841e2bdbc871ca13432e0",
       "session_hash": "b9848f77047b0b0a",
       "step": 1,
-      "elapsed_ms": 3122
+      "elapsed_ms": 11547
     },
     {
-      "at": "2026-10-08T17:32:54.694442+00:00",
+      "at": "2026-10-08T15:46:59.944944+00:00",
       "event": "run_end",
-      "run_id": "b7fb8da36aa8423998519650916bfc7c",
+      "run_id": "3847fee50eb841e2bdbc871ca13432e0",
       "session_hash": "b9848f77047b0b0a",
       "status": "completed",
       "model_calls": 1,
       "tool_calls": 0,
-      "elapsed_ms": 3238
+      "elapsed_ms": 11575
     }
   ]
 }

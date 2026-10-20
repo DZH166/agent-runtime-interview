@@ -110,10 +110,11 @@ class Runtime:
                     self.trace.emit("tool_end", **context, step=step, tool=call.name, call_id=call.id,
                                     ok=result["ok"], code=result.get("error", {}).get("code"),
                                     elapsed_ms=round((time.monotonic() - tool_start) * 1000))
-            pending.append({"role": "assistant", "content": answer, "provider_items": final_items})
-            state.turns.append(pending)
-            self.memory.compact(state, SYSTEM_PROMPT, [], schemas)
-            self.store.save(*key, state)
+            if status == "completed":
+                pending.append({"role": "assistant", "content": answer, "provider_items": final_items})
+                state.turns.append(pending)
+                self.memory.compact(state, SYSTEM_PROMPT, [], schemas)
+                self.store.save(*key, state)
         except SessionConflict:
             status, answer = "session_conflict", "会话已被另一进程更新；本轮未保存，请重新读取后提问。"
         except Exception as exc:

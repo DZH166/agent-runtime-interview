@@ -89,19 +89,33 @@ class RuntimeTests(unittest.TestCase):
                 self.assertFalse(json.loads(model.requests[1][-1]["content"])["ok"])
                 self.assertTrue(json.loads(model.requests[2][-1]["content"])["ok"])
 
-    def test_model_error_after_tool_keeps_protocol_complete(self):
-        model = ScriptedModel(call(), ModelError("timeout", "raw-private-error"))
-        result = self.runtime(model).ask("u", "a", "计算")
+    def test_model_error_after_tool_does_not_persist_incomplete_turn(self):
+        model = ScriptedModel(ModelReply("之前已完成"), call(), ModelError("timeout", "raw-private-error"))
+        runtime = self.runtime(model)
+        self.assertEqual(runtime.ask("u", "a", "旧问题").status, "completed")
+        result = runtime.ask("u", "a", "计算")
         self.assertEqual(result.status, "model_error")
-        turn = self.store.load("u", "a").turns[0]
-        self.assertEqual([m["role"] for m in turn], ["user", "assistant", "tool", "assistant"])
         self.assertNotIn("raw-private-error", result.answer)
 
-    def test_step_limit_closes_tool_group(self):
+        state = self.store.load("u", "a")
+        self.assertEqual(len(state.turns), 1)
+        self.assertEqual(state.turns[0][0]["content"], "旧问题")
+        self.assertNotIn("计算", json.dumps(state.turns, ensure_ascii=False))
+        self.assertNotIn("模型调用未完成", json.dumps(state.turns, ensure_ascii=False))
+
+        followup = ScriptedModel(ModelReply("可以继续"))
+        self.runtime(followup).ask("u", "a", "继续")
+        history = json.dumps([message for message in followup.requests[0]
+                              if message["role"] != "system"], ensure_ascii=False)
+        self.assertIn("旧问题", history)
+        self.assertNotIn("计算", history)
+        self.assertNotIn("模型调用未完成", history)
+
+    def test_step_limit_does_not_persist_incomplete_turn(self):
         model = ScriptedModel(call())
         result = self.runtime(model, max_steps=1).ask("u", "a", "循环")
         self.assertEqual(result.status, "step_limit")
-        self.assertEqual(self.store.load("u", "a").turns[0][-1]["role"], "assistant")
+        self.assertEqual(self.store.load("u", "a").turns, [])
 
     def test_duplicate_id_and_empty_response_rejected(self):
         for bad in (ModelReply(), ModelReply(None, [ToolCall("same", "calculator", "{}"), ToolCall("same", "calculator", "{}")] )):
@@ -143,6 +157,7 @@ class RuntimeTests(unittest.TestCase):
         self.assertLessEqual(len("\n".join(state.summaries)), 800)
         tiny = self.runtime(ScriptedModel(), memory=MemoryPolicy(context_chars=2000, summary_chars=200))
         self.assertEqual(tiny.ask("u", "huge", "很长" * 1500).status, "context_limit")
+        self.assertEqual(self.store.load("u", "huge").turns, [])
 
     def test_escaped_summary_fits_context_and_allows_next_short_question(self):
         policy = MemoryPolicy(max_recent_turns=1, context_chars=4000, summary_chars=1900)

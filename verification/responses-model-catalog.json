@@ -1,7 +1,7 @@
 {
   "status": 200,
   "matching_ids": [
-    "gpt-6.1-sol"
+    "<model-id>"
   ],
   "source": "user-authorized-image-credential"
 }
