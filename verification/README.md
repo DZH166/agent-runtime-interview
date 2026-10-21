@@ -49,8 +49,8 @@ JSON 的 7 个检查均为 true。每个场景保存了结构化工具结果，�
 |---|---|
 | [live-smoke.json](live-smoke.json) | 旧模型首轮 HTTP 错误，停止 |
 | [http-diagnostic.json](http-diagnostic.json) | 单次诊断得到 HTTP 502/upstream_error，上游访问被拒 |
-| [live-smoke-2026-10-08-auth-error.json](live-smoke-2026-10-08-auth-error.json) | 截图 OCR 误读凭据导致 HTTP 401，随后改用隐藏输入准确录入 |
-| [live-smoke-2026-10-08-timeout.json](live-smoke-2026-10-08-timeout.json) | 文本、追问及三工具执行成功，工具汇总超过 40 秒超时 |
+| [live-smoke-2026-10-08-auth-error.json](live-smoke-2026-10-08-auth-error.json) | 首次录入的凭据有误，返回 HTTP 401；随后改用隐藏输入重新录入 |
+| [live-smoke-2026-10-08-timeout.json](live-smoke-2026-10-08-timeout.json) | 文本和追问成功；三工具场景里三个工具都执行完，随后一次模型调用超时 |
 | [live-smoke-2026-10-08-final.json](live-smoke-2026-10-08-final.json) | 10 月 8 日最终 6 项场景通过，8 次请求 |
 | [live-smoke-2026-10-09-review.json](live-smoke-2026-10-09-review.json) | 本轮代码修复后的 6 项场景通过，8 次请求 |
 
